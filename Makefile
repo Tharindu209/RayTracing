@@ -1,13 +1,13 @@
 SRC_DIR = src
 BUILD_DIR = build/debug
-CC = g++
-SRC_FILES = $(wildcard $(SRC_DIR)/*.cpp)
+CC = gcc
+SRC_FILES = $(wildcard $(SRC_DIR)/*.c)
 OBJ_FILES = play
 INCLUDE_PATH = -Iinclude
 LIB_PATH = -Llib \
            -L/opt/homebrew/Cellar/sdl2/2.30.11/lib \
            -L/opt/homebrew/Cellar/sdl_image/1.2.12_10/lib
-CFLAGS = -Wall -g -O0 -std=c++11
+CFLAGS = -Wall -g -O0 -std=c11
 LINKER_FLAGS = -lsdl2 
 
 all:
