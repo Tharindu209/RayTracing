@@ -2,12 +2,13 @@
 #include <math.h>
 #include<SDL2/SDL.h>
 
-#define WIDTH 900
-#define HEIGHT 600
+#define WIDTH 1280
+#define HEIGHT 720
 #define COLOUR_WHITE 0xFFFFFFFF
 #define COLOUR_BLACK 0x00000000
-#define COLOUR_GRAY 0x808080FF
-#define NUM_RAYS 100
+#define COLOUR_YELLOW 0xedd653
+#define RAY_THIKNESS 3
+#define NUM_RAYS 200
 
 struct Circle{
     double x;
@@ -58,7 +59,7 @@ void fillRays(SDL_Surface* surface, struct Rays rays[NUM_RAYS], Uint32 colour, s
             x_draw += step * cos(ray.angle);
             y_draw += step * sin(ray.angle);
 
-            SDL_Rect pixel = (SDL_Rect) {x_draw, y_draw, 1, 1};
+            SDL_Rect pixel = (SDL_Rect) {x_draw, y_draw, RAY_THIKNESS, 1};
             SDL_FillRect(surface, &pixel, colour);
 
             if (x_draw < 0 || x_draw >= WIDTH || y_draw < 0 || y_draw >= HEIGHT){
@@ -100,15 +101,15 @@ int main(int argc, char * argv[]) {
             }
             if (event.type == SDL_MOUSEMOTION && event.motion.state){
                 circle.x = event.motion.x;
-                circle.y = event.motion.y;  
+                circle.y = event.motion.y; 
                 
             }
         }
         generateRays(circle, rays);
         SDL_FillRects(surface, &eraseRect, 1, COLOUR_BLACK);
+        fillTheCircle(surface, shadow_circle, SDL_MapRGB(surface->format, 52, 235, 174));
+        fillRays(surface, rays, COLOUR_YELLOW, shadow_circle);
         fillTheCircle(surface, circle, COLOUR_WHITE); 
-        fillTheCircle(surface, shadow_circle, SDL_MapRGB(surface->format, 255, 0, 0));
-        fillRays(surface, rays, COLOUR_GRAY, shadow_circle);
         SDL_UpdateWindowSurface(window);
         SDL_Delay(1);
     }
