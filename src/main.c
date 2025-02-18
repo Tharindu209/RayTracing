@@ -42,7 +42,8 @@ void generateRays(struct Circle circle, struct Rays rays[NUM_RAYS]){
     }
 }
 
-void fillRays(SDL_Surface* surface, struct Rays rays[NUM_RAYS], Uint32 colour){
+void fillRays(SDL_Surface* surface, struct Rays rays[NUM_RAYS], Uint32 colour, struct Circle circle){
+    double radius_square = pow(circle.r, 2);
     for (int i=0; i<NUM_RAYS; i++){
         struct Rays ray = rays[i];
 
@@ -62,6 +63,11 @@ void fillRays(SDL_Surface* surface, struct Rays rays[NUM_RAYS], Uint32 colour){
 
             if (x_draw < 0 || x_draw >= WIDTH || y_draw < 0 || y_draw >= HEIGHT){
                 offscreen = 1;
+            }
+
+            double distance_square = pow(x_draw - circle.x, 2) + pow(y_draw - circle.y, 2);
+            if (distance_square <= radius_square){
+                objeect_hit = 1;
             }
         }   
     }
@@ -102,7 +108,7 @@ int main(int argc, char * argv[]) {
         SDL_FillRects(surface, &eraseRect, 1, COLOUR_BLACK);
         fillTheCircle(surface, circle, COLOUR_WHITE); 
         fillTheCircle(surface, shadow_circle, SDL_MapRGB(surface->format, 255, 0, 0));
-        fillRays(surface, rays, COLOUR_GRAY);
+        fillRays(surface, rays, COLOUR_GRAY, shadow_circle);
         SDL_UpdateWindowSurface(window);
         SDL_Delay(1);
     }
